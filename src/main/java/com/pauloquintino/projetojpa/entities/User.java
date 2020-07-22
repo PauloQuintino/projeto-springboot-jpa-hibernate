@@ -2,8 +2,23 @@ package com.pauloquintino.projetojpa.entities;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+//Annotation @Entity do JPA que define que a classe User é uma entidade do Banco de Dados
+@Entity
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	/*
+	 * A annotation @Id do JPA define que o atributo id é chave primária da tabela
+	 *  enquanto a annotation @GeneratedValue com parâmetro do tipo Identity, faz com que o 
+	 *  valor do Id seja gerado automaticamente como valor de identidade	 
+	*/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;
