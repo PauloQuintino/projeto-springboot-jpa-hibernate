@@ -1,14 +1,21 @@
 package com.pauloquintino.projetojpa.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //Annotation @Entity do JPA que define que a classe User é uma entidade do Banco de Dados
 @Entity
+@Table(name = "tb_user")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -24,6 +31,11 @@ public class User implements Serializable {
 	private String email;
 	private String phone;
 	private String password;
+	
+	//criando a associação ao Pedido
+	@JsonIgnore //-> ignora a lista e não insere no JSON do Get do usuário, evitando loops infinitos
+	@OneToMany(mappedBy = "client")
+	private List<Order> order = new ArrayList<>();
 	
 	public User() {
 	}
@@ -76,6 +88,12 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	//somente getOrder devido ser uma coleção
+	public List<Order> getOrder() {
+		return order;
+	}
+
 
 	// **** ID HashCode and Equals	****
 	@Override
@@ -102,5 +120,6 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+
 	
 }
