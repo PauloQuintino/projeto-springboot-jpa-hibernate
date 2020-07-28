@@ -3,6 +3,8 @@ package com.pauloquintino.projetojpa.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -50,9 +52,13 @@ public class UserService {
 
 	public User update(Long id, User obj) {
 		// pega uma entidade que vai ser monitorada
+		try {
 		User entity = repository.getOne(id);
 		updateData(entity, obj);
 		return repository.save(entity);
+		}catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	/* metodo que vai atualizar um objeto de User de acordo com o que foi atualizado
