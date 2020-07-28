@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.pauloquintino.projetojpa.entities.User;
 import com.pauloquintino.projetojpa.repositories.UserRepository;
+import com.pauloquintino.projetojpa.services.exceptions.ResourceNotFoundException;
 
 @Service // --> registra o UserService como service do Spring para poder ser injetado com
 			// o Autowired em outras classes
@@ -24,7 +25,7 @@ public class UserService {
 
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	public User insert(User obj) {
